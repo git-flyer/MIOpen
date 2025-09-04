@@ -152,7 +152,7 @@ std::vector<Solution> FindConvolution(const ExecutionContext& ctx,
                                       bool force_attach_binary);
 
 struct MIOPEN_INTERNALS_EXPORT ConvolutionDescriptor : miopenConvolutionDescriptor
-{
+{   
     ConvolutionDescriptor(std::size_t spatial_dim,
                           miopenConvolutionMode_t c_mode,
                           miopenPaddingMode_t p_mode,

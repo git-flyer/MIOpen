@@ -35,14 +35,14 @@ struct FusionOpInvokeParamBase;
 } // namespace fusion
 
 struct OperatorArgs : miopenOperatorArgs
-{
+{   // 这个vector里存的应该是指向融合操作引用的参数的基类类型的指针，这个基类只有一个默认的析构函数
     std::vector<std::unique_ptr<fusion::FusionOpInvokeParamBase>> params;
     friend std::ostream& operator<<(std::ostream& stream, const OperatorArgs& x);
     void SetArg(size_t idx, std::unique_ptr<fusion::FusionOpInvokeParamBase>&& arg)
-    {
+    {   // 如果params的长度不够，那么就需要扩容
         if(params.size() < (idx + 1))
             params.resize(idx + 1);
-        params[idx] = std::move(arg);
+        params[idx] = std::move(arg);   //将arg指针控制的资源转移给params[idx]
     }
 };
 

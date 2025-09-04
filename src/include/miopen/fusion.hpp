@@ -54,13 +54,13 @@ enum FusionKernelSourceType
 };
 
 struct MIOPEN_INTERNALS_EXPORT FusionOpDescriptor : miopenFusionOpDescriptor
-{
-    virtual ~FusionOpDescriptor()                 = default;
-    FusionOpDescriptor(const FusionOpDescriptor&) = delete;
+{   // 这是一个抽象基类，因为有纯虚函数
+    virtual ~FusionOpDescriptor()                 = default; //析构函数是虚函数，可以通过基类指针安全释放字类对象
+    FusionOpDescriptor(const FusionOpDescriptor&) = delete;  //禁止拷贝构造
     FusionOpDescriptor()                          = default;
-    FusionOpDescriptor& operator=(const FusionOpDescriptor&) = delete;
-    void SetIdx(int _id) { plan_idx = _id; };
-    int GetIdx() const { return plan_idx; };
+    FusionOpDescriptor& operator=(const FusionOpDescriptor&) = delete;//禁止拷贝赋值
+    void SetIdx(int _id) { plan_idx = _id; };   //设置某个融合操作在plan里的下标，融合计划会根据下标依次执行融合操作
+    int GetIdx() const { return plan_idx; };    //获取该下标
     virtual miopenStatus_t GetOutputDesc(TensorDescriptor& output_desc) const = 0;
     virtual miopenStatus_t GetNetworkConfig(std::ostringstream& network_config);
     friend std::ostream& operator<<(std::ostream& stream, const FusionOpDescriptor& x);

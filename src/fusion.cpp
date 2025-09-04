@@ -545,8 +545,8 @@ std::ostream& operator<<(std::ostream& stream, const FusionPlanDescriptor& /*fpd
 // Fusion operator descriptors
 // Conv Forward
 miopenStatus_t ConvForwardOpDescriptor::GetOutputDesc(TensorDescriptor& output_desc) const
-{
-    return miopen::try_(
+{   // base_desc是ConvForwardOpDescriptor的一个成员变量，它是ConvolutionDescriptor类型的
+    return miopen::try_(  // GetForwardOutputTensor接收一个输入张量，一个卷积核张量和一个输出张量的类型
         [&]() { output_desc = base_desc.GetForwardOutputTensor(input_desc, filter_desc); });
 }
 
@@ -971,13 +971,13 @@ std::vector<miopenConvSolution_t> GetSolutions(const FusionContext& ctx,
 } // namespace
 
 miopenStatus_t FusionPlanDescriptor::Compile(const Handle& handle)
-{
+{   //Allocator是一个类，ManageDataPtr是一个智能指针，指向 miopenAllocatorFunction 分配出来的内存
     std::vector<Allocator::ManageDataPtr> invoke_bufs;
-    miopen::OperatorArgs params;
-
+    miopen::OperatorArgs params; //params里是一个vector存储了指向融合操作引用的参数的基类类型的指针
+    //用该 FusionPlanDescriptor 初始化了一个 FusionDescription
     const auto& fusion_problem = FusionDescription{this};
-    std::vector<Solution> find_results;
-
+    std::vector<Solution> find_results; // find_results用于存储该融合计划的解决方案
+    // 
     const auto network_config = fusion_problem.MakeNetworkConfig();
     auto invoker = handle.GetInvoker(network_config, std::nullopt, AlgorithmName{"fusion"});
 

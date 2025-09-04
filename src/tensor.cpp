@@ -583,9 +583,9 @@ std::string TensorDescriptor::LayoutEnumToStr(miopenTensorLayout_t layout)
     default: MIOPEN_THROW(miopenStatusInternalError, "Unknown layout");
     }
 }
-
+//返回一个张量描述符布局的字符串
 const std::string& TensorDescriptor::GetLayout_str() const
-{
+{   //如果已缓存的布局字符串是空的
     if(cached_layout_str.empty())
     {
         cached_layout_str = [&]() -> std::string {

@@ -72,7 +72,7 @@ auto get_object_impl(rank<1>, T& x) -> decltype(miopen_get_object(x))
 
 } // namespace detail
 
-template <class T>
+template <class T> 
 auto get_object(T& x) -> decltype(detail::get_object_impl(rank<1>{}, x))
 {
     return detail::get_object_impl(rank<1>{}, x);

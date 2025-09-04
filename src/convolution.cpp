@@ -372,7 +372,7 @@ TensorDescriptor ConvolutionDescriptor::GetForwardOutputTensor(const TensorDescr
                                                                const TensorDescriptor& wDesc,
                                                                miopenDataType_t yType) const
 {
-    // output layout same as input
+    // output layout same as input   输出张量的维度应该是和输入张量的维度相同的，NCHW或者NHWC格式
     const std::string in_layout = xDesc.GetLayout_str();
     return GetForwardOutputTensorWithLayout(xDesc, wDesc, in_layout, yType);
 }

@@ -40,11 +40,19 @@
 // This function should:
 //		set up the place descriptor with expected input and ouput edges.
 // 		Set up the internal datastructures for the fused kernel.
+
+// extern "C" 是一个 C++ 特性，告诉编译器以 C 语言的调用约定（C linkage）生成函数符号，避免 C++ 的名称修饰。
+// 这确保函数可以被其他语言（如 C）或需要 C 风格接口的代码调用
 extern "C" miopenStatus_t miopenCreateFusionPlan(miopenFusionPlanDescriptor_t* fusePlanDesc,
                                                  const miopenFusionDirection_t fuseDirection,
                                                  const miopenTensorDescriptor_t inputDesc)
 {
     MIOPEN_LOG_FUNCTION(fusePlanDesc, fuseDirection, inputDesc);
+    // 尝试执行内部的lambda表达式
+    // lambda 表达式先是解引用了一个二重指针
+    // desc 和 inputDesc 就是一个不透明指针
+    // 为该不透明指针new了一个真实的融合计划描述符，需要两个参数：
+    // 融合方向和输入张量描述符
     return miopen::try_([&] {
         auto& desc = miopen::deref(fusePlanDesc);
         desc       = new miopen::FusionPlanDescriptor(fuseDirection, miopen::deref(inputDesc));
